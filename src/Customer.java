@@ -14,98 +14,165 @@ public class Customer {
     }
 
     public void changePin() {
-        System.out.println("*---------------------------------------*");
-        System.out.println("*                                       *");
-        System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-        System.out.println("*                                       *");
-        System.out.println("*---------------------------------------*");
-        System.out.print("Do you remember your pin? (y/n):");
-        String userInput = scan.nextLine();
-
+        String userInput = "";
         while(!userInput.equals("y") && !userInput.equals("n")) {
-            ConsoleUtility.clearScreen();
-            System.out.println("Invalid Input!");
-            ConsoleUtility.pause();
-            ConsoleUtility.clearScreen();
             System.out.println("*---------------------------------------*");
             System.out.println("*                                       *");
-            System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
+            System.out.println("*               Pin Change              *");
             System.out.println("*                                       *");
             System.out.println("*---------------------------------------*");
-            System.out.print("Do you remember your pin? (y/n):");
+            System.out.print("Do you remember your pin? (y/n): ");
             userInput = scan.nextLine();
+            if (!userInput.equals("y") && !userInput.equals("n")) {
+                ConsoleUtility.clearScreen();
+                System.out.println("Invalid Input!");
+                ConsoleUtility.pause();
+                ConsoleUtility.clearScreen();
+            }
         }
 
         if (userInput.equals("y")) {
-            System.out.println("*---------------------------------------*");
-            System.out.println("*                                       *");
-            System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-            System.out.println("*                                       *");
-            System.out.println("*---------------------------------------*");
-            System.out.println("Enter your pin: "); // add an option to get out of this menu
-            int userInput2 = 0;
-            while (userInput2 != pin) {
+            int userInput2 = -1;
+            int errorCounter = 0;
+            while (userInput2 != pin && errorCounter < 3) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*               Pin Change              *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter your pin: ");
                 try {
                     userInput2 = scan.nextInt();
+                    if (userInput2 != pin) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Wrong Pin!");
+                        scan.nextLine();
+                        errorCounter++;
+                        ConsoleUtility.pause();
+                    }
+                } catch (Exception e) {
                     scan.nextLine();
-                } catch(Exception e) {
                     ConsoleUtility.clearScreen();
                     System.out.println("Not A Number!");
                     ConsoleUtility.pause();
-                    ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
-                    System.out.println("*                                       *");
-                    System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-                    System.out.println("*                                       *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.println("Enter your pin: ");
-                    userInput2 = scan.nextInt();
-                    scan.nextLine();
-                }
-                if (userInput2 != pin) {
-                    ConsoleUtility.clearScreen();
-                    System.out.println("Wrong Pin!");
-                    ConsoleUtility.pause();
-                    ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
-                    System.out.println("*                                       *");
-                    System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-                    System.out.println("*                                       *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter your pin: ");
-                    userInput2 = scan.nextInt();
-                    scan.nextLine();
                 }
             }
+
+
+
             ConsoleUtility.clearScreen();
-            System.out.println("*---------------------------------------*");
-            System.out.println("*                                       *");
-            System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-            System.out.println("*                                       *");
-            System.out.println("*---------------------------------------*");
-            System.out.print("Enter new pin: ");
+            System.out.println("Success! Correct Pin Entered!");
+            ConsoleUtility.pause(2000);
+            ConsoleUtility.clearScreen();
+
             boolean pinChanged = false;
             while (!pinChanged) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*               Pin Change              *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter new pin: ");
                 try {
-                    int newPin = scan.nextInt(); // fixed the logic here with showing the menu
-                    scan.nextLine();
+                    int newPin = scan.nextInt();
+                    pin = newPin;
                     pinChanged = true;
+                    scan.nextLine();
                 } catch (Exception e) {
                     scan.nextLine();
                     ConsoleUtility.clearScreen();
                     System.out.println("Not a number!");
                     ConsoleUtility.pause();
-                    ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
-                    System.out.println("*                                       *");
-                    System.out.println("*              \uD83D\uDD11 Pin Change \uD83D\uDD11             *");
-                    System.out.println("*                                       *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter new pin: ");
-                    int newPin = scan.nextInt();
-                    scan.nextLine();
                 }
             }
+            ConsoleUtility.clearScreen();
+            System.out.println("Success! Pin Changed to " + pin);
+            ConsoleUtility.pause(2000);
+            ConsoleUtility.clearScreen();
+        }
+
+        if (userInput.equals("n")) {
+            String userName = "";
+            while (!userName.equals(name)) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*               Pin Change              *");
+                System.out.println("*                                       *");
+                System.out.println("*     If you want to change your pin,   *");
+                System.out.println("*          we are going to need         *");
+                System.out.println("*           some info from you          *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter your name: ");
+                userName = scan.nextLine();
+                if (!userName.equals(name)) {
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Name does not match our records!");
+                    ConsoleUtility.pause(2000);
+                    ConsoleUtility.clearScreen();
+                }
+            }
+
+            int userZipCode = -1;
+            while (userZipCode != pin) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*               Pin Change              *");
+                System.out.println("*                                       *");
+                System.out.println("*     If you want to change your pin,   *");
+                System.out.println("*          we are going to need         *");
+                System.out.println("*           some info from you          *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter your Zipcode: ");
+                try {
+                    userZipCode = scan.nextInt();
+                    if (userZipCode != pin) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("ZipCode does not match our records!");
+                        scan.nextLine();
+                        ConsoleUtility.pause(2000);
+                    }
+                } catch (Exception e) {
+                    scan.nextLine();
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Not A Number!");
+                    ConsoleUtility.pause();
+                }
+            }
+
+            ConsoleUtility.clearScreen();
+            System.out.println("Success!");
+            ConsoleUtility.pause();
+            ConsoleUtility.clearScreen();
+
+            boolean pinChanged = false;
+            while (!pinChanged) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*               Pin Change              *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter new pin: ");
+                try {
+                    int newPin = scan.nextInt();
+                    pin = newPin;
+                    pinChanged = true;
+                    scan.nextLine();
+                } catch (Exception e) {
+                    scan.nextLine();
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Not a number!");
+                    ConsoleUtility.pause();
+                }
+            }
+            ConsoleUtility.clearScreen();
+            System.out.println("Success! Pin Changed to " + pin);
+            ConsoleUtility.pause(2000);
+            ConsoleUtility.clearScreen();
         }
     }
 }
