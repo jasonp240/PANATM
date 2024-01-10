@@ -1,9 +1,7 @@
 public class Account {
-    private String name;
     private double balance;
     private Customer customer;
-    public Account(String name, Customer customer) {
-        this.name = name;
+    public Account(Customer customer) {
         this.customer = customer;
         this.balance = 0;
     }
@@ -14,5 +12,8 @@ public class Account {
 
     public void withdraw(double money) {
         balance -= money;
+    }
+    public double getBalance(){
+        return balance;
     }
 }

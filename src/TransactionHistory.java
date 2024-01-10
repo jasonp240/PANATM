@@ -55,5 +55,22 @@ public class TransactionHistory {
     }
 
     public void printHistory() {
+        if (size == 0) {
+            ConsoleUtility.clearScreen();
+            System.out.println("No actions have been logged!");
+            ConsoleUtility.pause();
+            ConsoleUtility.clearScreen();
+        }
+        for (int i = 0; i < history.length; i++) {
+            if (i + 1 < 10) {
+                System.out.println("000" + i + history[i]);
+            } else if (i + 1 < 100) {
+                System.out.println("00" + i + history[i]);
+            } else if (i + 1 < 1000) {
+                System.out.println("0" + i + history[i]);
+            } else {
+                System.out.println("9999" + history[i]);
+            }
+        }
     }
 }
