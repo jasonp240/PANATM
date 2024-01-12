@@ -14,13 +14,13 @@ public class TransactionHistory {
             temp[i] = history[i];
             if (history.length - 1 == i) {
                 if (action.equals("pin")) {
-                    temp[i + 1] = "Pin Changed";
+                    temp[i] = "Pin Changed";
                 }
                 if (action.equals("get balance")) {
-                    temp[i + 1] = "Viewed Balance";
+                    temp[i] = "Viewed Balance";
                 }
                 if (action.equals("get transaction")) {
-                    temp[i + 1] = "Viewed Transaction History";
+                    temp[i] = "Viewed Transaction History";
                 }
             }
         }
@@ -29,29 +29,31 @@ public class TransactionHistory {
     public void addHistory(double amount, String type) {
         size++;
         String[] temp = new String[size];
-        for (int i = 0; i < history.length; i++) {
-            temp[i] = history[i];
-            if (history.length - 1 == i) {
+        for (int i = 0; i < temp.length; i++) {
+            if (i < history.length) {
+                temp[i] = history[i];
+            } else {
                 if (type.equals("withdrawS")) {
-                    temp[i + 1] = "Withdrawal of " + amount + "into savings account";
+                    temp[i] = "Withdrawal of " + amount + " from savings account";
                 }
                 if (type.equals("depositS")) {
-                    temp[i + 1] = "Deposit of " + amount + "into savings account";
+                    temp[i] = "Deposit of " + amount + " into savings account";
                 }
                 if (type.equals("withdrawC")) {
-                    temp[i + 1] = "Withdrawal of " + amount + "into checking account";
+                    temp[i] = "Withdrawal of " + amount + " from checking account";
                 }
                 if (type.equals("depositC")) {
-                    temp[i + 1] = "Deposit of " + amount + "into checking account";
+                    temp[i] = "Deposit of " + amount + " into checking account";
                 }
                 if (type.equals("transferSC")) {
-                    temp[i + 1] = "Transfer of " + amount + "from savings to checking account";
+                    temp[i] = "Transfer of " + amount + " from savings to checking account";
                 }
                 if (type.equals("transferCS")) {
-                    temp[i + 1] = "Transfer of " + amount + "from checking to savings account";
+                    temp[i] = "Transfer of " + amount + " from checking to savings account";
                 }
             }
         }
+        history = temp;
     }
 
     public void printHistory() {
@@ -60,17 +62,26 @@ public class TransactionHistory {
             System.out.println("No actions have been logged!");
             ConsoleUtility.pause();
             ConsoleUtility.clearScreen();
-        }
-        for (int i = 0; i < history.length; i++) {
-            if (i + 1 < 10) {
-                System.out.println("000" + i + history[i]);
-            } else if (i + 1 < 100) {
-                System.out.println("00" + i + history[i]);
-            } else if (i + 1 < 1000) {
-                System.out.println("0" + i + history[i]);
-            } else {
-                System.out.println("9999" + history[i]);
+        } else {
+            ConsoleUtility.clearScreen();
+            System.out.println("*---------------------------------------*");
+            System.out.println("*                                       *");
+            System.out.println("*          Transaction History          *");
+            System.out.println("*                                       *");
+            System.out.println("*---------------------------------------*");
+            for (int i = 0; i < history.length; i++) {
+                if (i < 10) {
+                    System.out.println("000" + (i + 1) + " - " + history[i]);
+                } else if (i < 100) {
+                    System.out.println("00" + (i + 1) + " - " +  history[i]);
+                } else if (i < 1000) {
+                    System.out.println("0" + (i + 1) + " - " + history[i]);
+                } else {
+                    System.out.println("9999" + " - " + history[i]);
+                }
             }
+            ConsoleUtility.pause(history.length * 1000);
+            ConsoleUtility.clearScreen();
         }
     }
 }
