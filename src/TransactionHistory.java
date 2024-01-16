@@ -1,20 +1,25 @@
 public class TransactionHistory {
-    private String[] history;
-    private int size;
+    private String[] historyA;
+    private String[] historyS;
+    private int sizeA;
+    private int sizeS;
 
     public TransactionHistory() {
-        size = 0;
-        history = new String[size];
+        sizeA = 0;
+        sizeS = 0;
+        historyA = new String[sizeA];
+        historyS = new String[sizeS];
     }
 
     public void addHistory(String action) {
-        size++;
-        String[] temp = new String[size];
-        for (int i = 0; i < history.length; i++) {
-            temp[i] = history[i];
-            if (history.length - 1 == i) {
+        sizeS++;
+        String[] temp = new String[sizeS];
+        for (int i = 0; i < temp.length; i++) {
+            if (i < historyS.length) {
+                temp[i] = historyS[i];
+            } else {
                 if (action.equals("pin")) {
-                    temp[i] = "Pin Changed";
+                    temp[i] = "Pin changed";
                 }
                 if (action.equals("get balance")) {
                     temp[i] = "Viewed Balance";
@@ -24,14 +29,15 @@ public class TransactionHistory {
                 }
             }
         }
+        historyS = temp;
     }
 
     public void addHistory(double amount, String type) {
-        size++;
-        String[] temp = new String[size];
+        sizeA++;
+        String[] temp = new String[sizeA];
         for (int i = 0; i < temp.length; i++) {
-            if (i < history.length) {
-                temp[i] = history[i];
+            if (i < historyA.length) {
+                temp[i] = historyA[i];
             } else {
                 if (type.equals("withdrawS")) {
                     temp[i] = "Withdrawal of " + amount + " from savings account";
@@ -53,13 +59,13 @@ public class TransactionHistory {
                 }
             }
         }
-        history = temp;
+        historyA = temp;
     }
 
-    public void printHistory() {
-        if (size == 0) {
+    public void printHistoryA() {
+        if (sizeA == 0) {
             ConsoleUtility.clearScreen();
-            System.out.println("No actions have been logged!");
+            System.out.println("No account Transactions have been logged!");
             ConsoleUtility.pause();
             ConsoleUtility.clearScreen();
         } else {
@@ -67,20 +73,50 @@ public class TransactionHistory {
             System.out.println("*---------------------------------------*");
             System.out.println("*                                       *");
             System.out.println("*          Transaction History          *");
+            System.out.println("*          Account Transactions         *");
             System.out.println("*                                       *");
             System.out.println("*---------------------------------------*");
-            for (int i = 0; i < history.length; i++) {
+            for (int i = 0; i < historyA.length; i++) {
                 if (i < 10) {
-                    System.out.println("000" + (i + 1) + " - " + history[i]);
+                    System.out.println("A000" + (i + 1) + " - " + historyA[i]);
                 } else if (i < 100) {
-                    System.out.println("00" + (i + 1) + " - " +  history[i]);
+                    System.out.println("A00" + (i + 1) + " - " +  historyA[i]);
                 } else if (i < 1000) {
-                    System.out.println("0" + (i + 1) + " - " + history[i]);
+                    System.out.println("A0" + (i + 1) + " - " + historyA[i]);
                 } else {
-                    System.out.println("9999" + " - " + history[i]);
+                    System.out.println("A9999" + " - " + historyA[i]);
                 }
             }
-            ConsoleUtility.pause(history.length * 1000);
+            ConsoleUtility.pause(historyA.length * 1000);
+            ConsoleUtility.clearScreen();
+        }
+    }
+    public void printHistoryS() {
+        if (sizeS== 0) {
+            ConsoleUtility.clearScreen();
+            System.out.println("No security transactions have been logged!");
+            ConsoleUtility.pause();
+            ConsoleUtility.clearScreen();
+        } else {
+            ConsoleUtility.clearScreen();
+            System.out.println("*---------------------------------------*");
+            System.out.println("*                                       *");
+            System.out.println("*          Transaction History          *");
+            System.out.println("*         Security Transactions         *");
+            System.out.println("*                                       *");
+            System.out.println("*---------------------------------------*");
+            for (int i = 0; i < historyS.length; i++) {
+                if (i < 10) {
+                    System.out.println("S000" + (i + 1) + " - " + historyS[i]);
+                } else if (i < 100) {
+                    System.out.println("S00" + (i + 1) + " - " +  historyS[i]);
+                } else if (i < 1000) {
+                    System.out.println("S0" + (i + 1) + " - " + historyS[i]);
+                } else {
+                    System.out.println("S9999" + " - " + historyS[i]);
+                }
+            }
+            ConsoleUtility.pause(historyA.length * 1000);
             ConsoleUtility.clearScreen();
         }
     }

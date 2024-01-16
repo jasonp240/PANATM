@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 public class ATM {
     private Customer customer;
@@ -25,17 +26,51 @@ public class ATM {
         System.out.print("Enter your zipcode: ");
         int zipcode = scan.nextInt();
         scan.nextLine();
-        System.out.print("Enter a Pin: ");
+        System.out.print("Enter a pin: ");
         int pin = scan.nextInt();
         scan.nextLine();
 
         customer = new Customer(pin, name, zipcode);
         savings = new Account(customer);
-        savings.deposit(6000);
         checking = new Account(customer);
 
         int userInput = -1;
+        boolean cont = false;
+        int userPin = 0;
         while (userInput != 7) {
+            while (!cont) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*                   ATM                 *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("Enter your pin to continue: ");
+                try {
+                    userPin = scan.nextInt();
+                    scan.nextLine();
+                    if (userPin != customer.getPin()) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Wrong Pin!");
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
+                    } else {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Correct Pin!");
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
+                        cont = true;
+                    }
+                } catch (Exception e) {
+                    scan.nextLine();
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Not A Number!");
+                    ConsoleUtility.pause();
+                    ConsoleUtility.clearScreen();
+                }
+            }
+            cont = false;
+
             ConsoleUtility.clearScreen();
             System.out.println("*---------------------------------------*");
             System.out.println("*                                       *");
@@ -71,6 +106,7 @@ public class ATM {
                 while (!account.equals("savings") && !account.equals("checking") || !done) {
                     if (savings.getBalance() == 0 && checking.getBalance() == 0) {
                         System.out.println("Can't withdraw!");
+                        ConsoleUtility.pause();
                         break;
                     }
                     ConsoleUtility.clearScreen();
@@ -97,26 +133,85 @@ public class ATM {
                         done = true;
                     }
                 }
-                if (account.equals("savings")) {
-                    withdraw(savings);
-                } else {
-                    withdraw(checking);
+                if (done) {
+                    if (account.equals("savings")) {
+                        withdraw(savings);
+                    } else {
+                        withdraw(checking);
+                    }
                 }
             } else if (userInput == 2) {
-                customer.changePin();
+                String account = "";
+                while (!account.equals("savings") && !account.equals("checking")) {
+                    ConsoleUtility.clearScreen();
+                    System.out.println("*---------------------------------------*");
+                    System.out.println("*                                       *");
+                    System.out.println("*                   ATM                 *");
+                    System.out.println("*                                       *");
+                    System.out.println("*---------------------------------------*");
+                    System.out.println("*            Savings Account            *");
+                    System.out.println("*            Checking Account           *");
+                    System.out.println("*---------------------------------------*");
+                    System.out.print("Enter Account: ");
+                    account = scan.nextLine();
+                    if (!account.equals("savings") && !account.equals("checking")) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Invalid Input!");
+                        ConsoleUtility.pause();
+                    }
+                }
+                if (account.equals("savings")) {
+                    deposit(savings);
+                } else {
+                    deposit(checking);
+                }
+            } else if (userInput == 3) {
+                System.out.println();
             } else if (userInput == 4) {
-                System.out.println(savings.getBalance());
-                System.out.println(checking.getBalance());
+                System.out.println("Savings Account: ");
+                System.out.println("$" + savings.getBalance());
+                System.out.println("Checking Account: ");
+                System.out.println("$" + checking.getBalance());
                 ConsoleUtility.pause(2000);
+                transactionHistory.addHistory("get balance");
             } else if (userInput == 5) {
-                transactionHistory.printHistory();
+                transactionHistory.printHistoryA();
+                transactionHistory.printHistoryS();
             }
             else if (userInput == 6) {
                 customer.changePin();
                 transactionHistory.addHistory("pin");
             }
+
+            String userInput1 = "";
+            while (!userInput1.equals("y") && !userInput1.equals("n")) {
+                ConsoleUtility.clearScreen();
+                System.out.println("*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*                   ATM                 *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.print("do you want to continue? (y/n): ");
+                try {
+                    userInput1 = scan.nextLine();
+                    if (!userInput1.equals("y") && !userInput1.equals("n")) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Invalid Input!");
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
+                    } else if (userInput1.equals("n")){
+                        userInput = 7;
+                    }
+                } catch (Exception e) {
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Invalid Input!");
+                    ConsoleUtility.pause();
+                    ConsoleUtility.clearScreen();
+                }
+            }
         }
-    } public void withdraw(Account account) {
+    }
+    public void withdraw(Account account) {
         boolean transactionDone = false;
         while (!transactionDone) {
             boolean done1 = false;
@@ -204,12 +299,53 @@ public class ATM {
                     account.withdraw(withdrawAMT);
                     if (account == savings) {
                         transactionHistory.addHistory(withdrawAMT, "withdrawS");
+                        System.out.println("Withdrew $" + withdrawAMT + " from savings account");
+                        ConsoleUtility.pause(2000);
                     } else {
                         transactionHistory.addHistory(withdrawAMT, "withdrawC");
+                        System.out.println("Withdrew $" + withdrawAMT + " from checking account");
+                        ConsoleUtility.pause(2000);
                     }
                     transactionDone = true;
                 }
             }
         }
+    }
+
+    public void deposit(Account account) {
+        double depositAMT = 0;
+        boolean done1 = false;
+        depositAMT = -1;
+        while (!done1) {
+            ConsoleUtility.clearScreen();
+            System.out.println("*---------------------------------------*");
+            System.out.println("*                                       *");
+            System.out.println("*                   ATM                 *");
+            System.out.println("*                                       *");
+            System.out.println("*---------------------------------------*");
+            System.out.print("Enter amount to deposit: ");
+            try {
+                depositAMT = scan.nextDouble();
+                scan.nextLine();
+                done1 = true;
+            } catch (Exception e) {
+                scan.nextLine();
+                ConsoleUtility.clearScreen();
+                System.out.println("Invalid Input!");
+                ConsoleUtility.pause();
+                ConsoleUtility.clearScreen();
+            }
+        }
+        account.deposit(depositAMT);
+        if (account == savings) {
+            transactionHistory.addHistory(depositAMT, "depositS");
+            System.out.println("Deposited $" + depositAMT + " into savings account");
+            ConsoleUtility.pause(2000);
+        } else {
+            transactionHistory.addHistory(depositAMT, "depositC");
+            System.out.println("Deposited $" + depositAMT + " into checking account");
+            ConsoleUtility.pause(2000);
+        }
+
     }
 }

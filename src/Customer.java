@@ -131,4 +131,8 @@ public class Customer {
         ConsoleUtility.pause(2000);
         ConsoleUtility.clearScreen();
     }
+
+    public int getPin() {
+        return pin;
+    }
 }
