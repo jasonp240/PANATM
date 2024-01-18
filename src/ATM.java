@@ -105,14 +105,17 @@ public class ATM {
                 boolean done = false;
                 while (!account.equals("savings") && !account.equals("checking") || !done) {
                     if (savings.getBalance() == 0 && checking.getBalance() == 0) {
+                        ConsoleUtility.clearScreen();
                         System.out.println("Can't withdraw!");
                         ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                         break;
                     }
                     ConsoleUtility.clearScreen();
                     System.out.println("*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
+                    System.out.println("*                 Withdraw              *");
                     System.out.println("*                                       *");
                     System.out.println("*---------------------------------------*");
                     System.out.println("*            Savings Account            *");
@@ -166,7 +169,31 @@ public class ATM {
                     deposit(checking);
                 }
             } else if (userInput == 3) {
-                System.out.println();
+                String account = "";
+                while (!account.equals("savings") && !account.equals("checking")) {
+                    ConsoleUtility.clearScreen();
+                    System.out.println("*---------------------------------------*");
+                    System.out.println("*                                       *");
+                    System.out.println("*                   ATM                 *");
+                    System.out.println("*                                       *");
+                    System.out.println("*---------------------------------------*");
+                    System.out.println("*            Savings Account            *");
+                    System.out.println("*            Checking Account           *");
+                    System.out.println("*---------------------------------------*");
+                    System.out.print("Enter Account to transfer FROM: ");
+                    account = scan.nextLine();
+                    if (!account.equals("savings") && !account.equals("checking")) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println("Invalid Input!");
+                        ConsoleUtility.pause();
+                    }
+                }
+                if (account.equals("savings")) {
+                    transfer(savings);
+                } else {
+                    transfer(checking);
+                }
+
             } else if (userInput == 4) {
                 System.out.println("Savings Account: ");
                 System.out.println("$" + savings.getBalance());
@@ -211,7 +238,7 @@ public class ATM {
             }
         }
     }
-    public void withdraw(Account account) {
+    private void withdraw(Account account) {
         boolean transactionDone = false;
         while (!transactionDone) {
             boolean done1 = false;
@@ -221,6 +248,7 @@ public class ATM {
                 System.out.println("*---------------------------------------*");
                 System.out.println("*                                       *");
                 System.out.println("*                   ATM                 *");
+                System.out.println("*                 Withdraw              *");
                 System.out.println("*                                       *");
                 System.out.println("*---------------------------------------*");
                 System.out.println("* We can only give out $20 and $5 bills *");
@@ -232,7 +260,10 @@ public class ATM {
                     if (withdrawAMT <= account.getBalance() && withdrawAMT % 5 == 0 && withdrawAMT >= 5) {
                         done1 = true;
                     } else {
+                        ConsoleUtility.clearScreen();
                         System.out.println("invalid");
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                     }
                 } catch (Exception e) {
                     scan.nextLine();
@@ -253,6 +284,7 @@ public class ATM {
                         System.out.println("*---------------------------------------*");
                         System.out.println("*                                       *");
                         System.out.println("*                   ATM                 *");
+                        System.out.println("*                 Withdraw              *");
                         System.out.println("*                                       *");
                         System.out.println("*---------------------------------------*");
                         System.out.print("Enter amount of $20 bill/s: ");
@@ -275,6 +307,7 @@ public class ATM {
                     System.out.println("*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
+                    System.out.println("*                 Withdraw              *");
                     System.out.println("*                                       *");
                     System.out.println("*---------------------------------------*");
                     System.out.print("Enter amount of 5 bill/s: ");
@@ -312,10 +345,9 @@ public class ATM {
         }
     }
 
-    public void deposit(Account account) {
+    private void deposit(Account account) {
         double depositAMT = 0;
         boolean done1 = false;
-        depositAMT = -1;
         while (!done1) {
             ConsoleUtility.clearScreen();
             System.out.println("*---------------------------------------*");
@@ -346,6 +378,50 @@ public class ATM {
             System.out.println("Deposited $" + depositAMT + " into checking account");
             ConsoleUtility.pause(2000);
         }
+    }
 
+    private void transfer(Account account) {
+        double transferAMT = 0;
+        boolean done = false;
+        while (!done) {
+            ConsoleUtility.clearScreen();
+            System.out.println("*---------------------------------------*");
+            System.out.println("*                                       *");
+            System.out.println("*                   ATM                 *");
+            System.out.println("*                                       *");
+            System.out.println("*---------------------------------------*");
+            System.out.print("Enter the amount to transfer: ");
+            try {
+                transferAMT = scan.nextDouble();
+                scan.nextLine();
+                if (transferAMT > account.getBalance()) {
+                    ConsoleUtility.clearScreen();
+                    System.out.println("Insufficient funds!");
+                    ConsoleUtility.pause();
+                    ConsoleUtility.clearScreen();
+                } else {
+                    done = true;
+                }
+            } catch (Exception e) {
+                scan.nextLine();
+                ConsoleUtility.clearScreen();
+                System.out.println("Invalid Input!");
+                ConsoleUtility.pause();
+                ConsoleUtility.clearScreen();
+            }
+        }
+        if (account == savings) {
+            checking.deposit(transferAMT);
+            savings.withdraw(transferAMT);
+            transactionHistory.addHistory(transferAMT, "transferSC");
+            System.out.println("Transferred $" + transferAMT + " into checking account from savings account");
+            ConsoleUtility.pause(3000);
+        } else {
+            savings.deposit(transferAMT);
+            checking.withdraw(transferAMT);
+            transactionHistory.addHistory(transferAMT, "transferCS");
+            System.out.println("Transferred $" + transferAMT + " into savings account from checking account");
+            ConsoleUtility.pause(3000);
+        }
     }
 }
