@@ -14,23 +14,23 @@ public class ATM {
     }
 
     public void start() {
-        System.out.println("*---------------------------------------*");
+        System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
         System.out.println("*                                       *");
         System.out.println("*                   ATM                 *");
         System.out.println("*                                       *");
         System.out.println("*          Welcome to the ATM!          *");
         System.out.println("*                                       *");
-        System.out.println("*---------------------------------------*");
-        System.out.print("Enter your name: ");
+        System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+        System.out.print("Enter your " + ConsoleUtility.CYAN + "name" + ConsoleUtility.RESET + ": ");
         String name = scan.nextLine();
-        System.out.print("Enter your zipcode: ");
+        System.out.print("Enter your " + ConsoleUtility.CYAN + "zipcode" + ConsoleUtility.RESET + ": ");
         int zipcode = scan.nextInt();
         scan.nextLine();
-        System.out.print("Enter a pin: ");
+        System.out.print("Enter a " + ConsoleUtility.CYAN + "pin" + ConsoleUtility.RESET + ": ");
         int pin = scan.nextInt();
         scan.nextLine();
 
-        customer = new Customer(pin, name, zipcode);
+        customer = new Customer(pin, name.toLowerCase(), zipcode);
         savings = new Account(customer);
         checking = new Account(customer);
 
@@ -40,23 +40,23 @@ public class ATM {
         while (userInput != 7) {
             while (!cont) {
                 ConsoleUtility.clearScreen();
-                System.out.println("*---------------------------------------*");
+                System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                 System.out.println("*                                       *");
                 System.out.println("*                   ATM                 *");
                 System.out.println("*                                       *");
-                System.out.println("*---------------------------------------*");
-                System.out.print("Enter your pin to continue: ");
+                System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                System.out.print("Enter your " + ConsoleUtility.CYAN + "pin" + ConsoleUtility.RESET + " to continue: ");
                 try {
                     userPin = scan.nextInt();
                     scan.nextLine();
                     if (userPin != customer.getPin()) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Wrong Pin!");
+                        System.out.println(ConsoleUtility.RED + "Wrong Pin!" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                     } else {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Correct Pin!");
+                        System.out.println(ConsoleUtility.GREEN + "Correct Pin!" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                         cont = true;
@@ -64,41 +64,45 @@ public class ATM {
                 } catch (Exception e) {
                     scan.nextLine();
                     ConsoleUtility.clearScreen();
-                    System.out.println("Not A Number!");
+                    System.out.println(ConsoleUtility.RED + "Invalid Input (only #'s)" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();
                     ConsoleUtility.clearScreen();
                 }
             }
             cont = false;
-
-            ConsoleUtility.clearScreen();
-            System.out.println("*---------------------------------------*");
-            System.out.println("*                                       *");
-            System.out.println("*                   ATM                 *");
-            System.out.println("*                                       *");
-            System.out.println("*---------------------------------------*");
-            System.out.println("* 1. Withdraw Money                     *");
-            System.out.println("* 2. Deposit Money                      *");
-            System.out.println("* 3. Transfer Money Between Accounts    *");
-            System.out.println("* 4. Get Account Balances               *");
-            System.out.println("* 5. Get Transaction History            *");
-            System.out.println("* 6. Change Pin                         *");
-            System.out.println("* 7. Exit                               *");
-            System.out.println("*---------------------------------------*");
-            System.out.print("Enter action (1-7): ");
-            try {
-                userInput = scan.nextInt();
-                scan.nextLine();
-                if (userInput < 1 || userInput > 7) {
+            Boolean cont1 = false;
+            while (!cont1) {
+                ConsoleUtility.clearScreen();
+                System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
+                System.out.println("*                                       *");
+                System.out.println("*                   ATM                 *");
+                System.out.println("*                                       *");
+                System.out.println("*---------------------------------------*");
+                System.out.println("* 1. Withdraw Money                     *");
+                System.out.println("* 2. Deposit Money                      *");
+                System.out.println("* 3. Transfer Money Between Accounts    *");
+                System.out.println("* 4. Get Account Balances               *");
+                System.out.println("* 5. Get Transaction History            *");
+                System.out.println("* 6. Change Pin                         *");
+                System.out.println("* 7. Exit                               *");
+                System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                System.out.print("Enter " + ConsoleUtility.CYAN + "action" + ConsoleUtility.RESET + "(1-7): ");
+                try {
+                    userInput = scan.nextInt();
+                    scan.nextLine();
+                    if (userInput < 1 || userInput > 7) {
+                        ConsoleUtility.clearScreen();
+                        System.out.println(ConsoleUtility.RED + "Invalid Input (only 1-7)" + ConsoleUtility.RESET);
+                        ConsoleUtility.pause();
+                    } else {
+                        cont1 = true;
+                    }
+                } catch (Exception e) {
+                    scan.nextLine();
                     ConsoleUtility.clearScreen();
-                    System.out.println("Invalid Input!");
+                    System.out.println(ConsoleUtility.RED + "Invalid Input (#'s)" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();
                 }
-            } catch (Exception e) {
-                scan.nextLine();
-                ConsoleUtility.clearScreen();
-                System.out.println("Not A Number!");
-                ConsoleUtility.pause();
             }
             if (userInput == 1) {
                 String account = "";
@@ -106,13 +110,13 @@ public class ATM {
                 while (!account.equals("savings") && !account.equals("checking") || !done) {
                     if (savings.getBalance() == 0 && checking.getBalance() == 0) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Can't withdraw!");
+                        System.out.println(ConsoleUtility.RED + "Insufficient Funds!" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                         break;
                     }
                     ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
+                    System.out.println(ConsoleUtility. BLUE + "*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
                     System.out.println("*                 Withdraw              *");
@@ -120,18 +124,24 @@ public class ATM {
                     System.out.println("*---------------------------------------*");
                     System.out.println("*            Savings Account            *");
                     System.out.println("*            Checking Account           *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter Account: ");
+                    System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                    System.out.print("Enter " + ConsoleUtility.CYAN + "Account" + ConsoleUtility.RESET + ": ");
                     account = scan.nextLine();
                     if (!account.equals("savings") && !account.equals("checking")) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Invalid Input!");
+                        System.out.println(ConsoleUtility.RED + "Invalid Input! (checking or savings)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                     }
                     if (account.equals("savings") && savings.getBalance() == 0) {
-                        System.out.println("Invalid");
+                        ConsoleUtility.clearScreen();
+                        System.out.println(ConsoleUtility.RED + "Insufficient Funds" + ConsoleUtility.RESET);
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                     } else if (account.equals("checking") && checking.getBalance() == 0) {
-                        System.out.println("Invalid");
+                        ConsoleUtility.clearScreen();
+                        System.out.println(ConsoleUtility.RED + "Insufficient Funds" + ConsoleUtility.RESET);
+                        ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                     } else {
                         done = true;
                     }
@@ -147,20 +157,22 @@ public class ATM {
                 String account = "";
                 while (!account.equals("savings") && !account.equals("checking")) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
+                    System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
+                    System.out.println("*                 Deposit               *");
                     System.out.println("*                                       *");
                     System.out.println("*---------------------------------------*");
                     System.out.println("*            Savings Account            *");
                     System.out.println("*            Checking Account           *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter Account: ");
+                    System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                    System.out.print("Enter " + ConsoleUtility.CYAN + "Account" + ConsoleUtility.RESET + ": ");
                     account = scan.nextLine();
                     if (!account.equals("savings") && !account.equals("checking")) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Invalid Input!");
+                        System.out.println(ConsoleUtility.RED + "Invalid Input! (checking or savings)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                     }
                 }
                 if (account.equals("savings")) {
@@ -172,20 +184,22 @@ public class ATM {
                 String account = "";
                 while (!account.equals("savings") && !account.equals("checking")) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
+                    System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
+                    System.out.println("*                 Transfer              *");
                     System.out.println("*                                       *");
                     System.out.println("*---------------------------------------*");
                     System.out.println("*            Savings Account            *");
                     System.out.println("*            Checking Account           *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter Account to transfer FROM: ");
+                    System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                    System.out.print("Enter " + ConsoleUtility.CYAN + "Account" + ConsoleUtility.RESET + " to transfer " + ConsoleUtility.RED + "FROM " + ConsoleUtility.RESET + ": ");
                     account = scan.nextLine();
                     if (!account.equals("savings") && !account.equals("checking")) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Invalid Input!");
+                        System.out.println(ConsoleUtility.RED + "Invalid Input! (checking or savings)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
+                        ConsoleUtility.clearScreen();
                     }
                 }
                 if (account.equals("savings")) {
@@ -195,10 +209,10 @@ public class ATM {
                 }
 
             } else if (userInput == 4) {
-                System.out.println("Savings Account: ");
-                System.out.println("$" + savings.getBalance());
-                System.out.println("Checking Account: ");
-                System.out.println("$" + checking.getBalance());
+                System.out.println(ConsoleUtility.PURPLE + "Savings Account: " + ConsoleUtility.RESET);
+                System.out.println(ConsoleUtility.GREEN + "$" + ConsoleUtility.RESET + savings.getBalance());
+                System.out.println(ConsoleUtility.YELLOW + "Checking Account: " + ConsoleUtility.RESET);
+                System.out.println(ConsoleUtility.GREEN + "$" + ConsoleUtility.RESET + checking.getBalance());
                 ConsoleUtility.pause(2000);
                 transactionHistory.addHistory("get balance");
             } else if (userInput == 5) {
@@ -213,17 +227,17 @@ public class ATM {
             String userInput1 = "";
             while (!userInput1.equals("y") && !userInput1.equals("n")) {
                 ConsoleUtility.clearScreen();
-                System.out.println("*---------------------------------------*");
+                System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                 System.out.println("*                                       *");
                 System.out.println("*                   ATM                 *");
                 System.out.println("*                                       *");
-                System.out.println("*---------------------------------------*");
-                System.out.print("do you want to continue? (y/n): ");
+                System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                System.out.print("do you want to " + ConsoleUtility.GREEN + "continue" + ConsoleUtility.RESET + "? (y/n): ");
                 try {
                     userInput1 = scan.nextLine();
                     if (!userInput1.equals("y") && !userInput1.equals("n")) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("Invalid Input!");
+                        System.out.println(ConsoleUtility.RED + "Invalid Input! (y or n)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                     } else if (userInput1.equals("n")){
@@ -231,12 +245,18 @@ public class ATM {
                     }
                 } catch (Exception e) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("Invalid Input!");
+                    System.out.println(ConsoleUtility.RED + "Invalid Input!" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();
                     ConsoleUtility.clearScreen();
                 }
             }
         }
+        System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
+        System.out.println("*                                       *");
+        System.out.println("*                   ATM                 *");
+        System.out.println("*                                       *");
+        System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+        System.out.println(ConsoleUtility.GREEN + "Thank you for being a customer!" + ConsoleUtility.RESET);
     }
     private void withdraw(Account account) {
         boolean transactionDone = false;
@@ -245,15 +265,15 @@ public class ATM {
             double withdrawAMT = -1;
             while (!done1) {
                 ConsoleUtility.clearScreen();
-                System.out.println("*---------------------------------------*");
+                System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                 System.out.println("*                                       *");
                 System.out.println("*                   ATM                 *");
                 System.out.println("*                 Withdraw              *");
                 System.out.println("*                                       *");
                 System.out.println("*---------------------------------------*");
                 System.out.println("* We can only give out $20 and $5 bills *");
-                System.out.println("*---------------------------------------*");
-                System.out.print("Enter amount to withdraw: ");
+                System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                System.out.print("Enter amount to " + ConsoleUtility.CYAN + "withdraw" + ConsoleUtility.RESET + ": ");
                 try {
                     withdrawAMT = scan.nextDouble();
                     scan.nextLine();
@@ -261,14 +281,14 @@ public class ATM {
                         done1 = true;
                     } else {
                         ConsoleUtility.clearScreen();
-                        System.out.println("invalid");
+                        System.out.println(ConsoleUtility.RED + "Invalid Amount (Must be able to be withdrawn by $5 and $20 Bills)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                     }
                 } catch (Exception e) {
                     scan.nextLine();
                     ConsoleUtility.clearScreen();
-                    System.out.println("Invalid withdraw amount!");
+                    System.out.println(ConsoleUtility.RED + "Invalid Input! (Must be #'s)" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();
                     ConsoleUtility.clearScreen();
                 }
@@ -281,13 +301,13 @@ public class ATM {
                 if (withdrawAMT >= 20) {
                     while (!done) {
                         ConsoleUtility.clearScreen();
-                        System.out.println("*---------------------------------------*");
+                        System.out.println(ConsoleUtility.BLUE +"*---------------------------------------*");
                         System.out.println("*                                       *");
                         System.out.println("*                   ATM                 *");
                         System.out.println("*                 Withdraw              *");
                         System.out.println("*                                       *");
-                        System.out.println("*---------------------------------------*");
-                        System.out.print("Enter amount of $20 bill/s: ");
+                        System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                        System.out.print("Enter amount of " + ConsoleUtility.CYAN + "$20 bills" + ConsoleUtility.RESET + ": ");
                         try {
                             twentyDollarBills = scan.nextInt();
                             scan.nextLine();
@@ -295,7 +315,7 @@ public class ATM {
                         } catch (Exception e) {
                             scan.nextLine();
                             ConsoleUtility.clearScreen();
-                            System.out.println("Invalid Input!");
+                            System.out.println(ConsoleUtility.RED + "Invalid Input! (Must be #'s)" + ConsoleUtility.RESET);
                             ConsoleUtility.pause();
                             ConsoleUtility.clearScreen();
                         }
@@ -304,13 +324,13 @@ public class ATM {
                 done = false;
                 while (!done) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("*---------------------------------------*");
+                    System.out.println(ConsoleUtility.BLUE +"*---------------------------------------*");
                     System.out.println("*                                       *");
                     System.out.println("*                   ATM                 *");
                     System.out.println("*                 Withdraw              *");
                     System.out.println("*                                       *");
-                    System.out.println("*---------------------------------------*");
-                    System.out.print("Enter amount of 5 bill/s: ");
+                    System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+                    System.out.print("Enter amount of " + ConsoleUtility.CYAN + "$5 bills" + ConsoleUtility.RESET + ": ");
                     try {
                         fiveDollarBills = scan.nextInt();
                         scan.nextLine();
@@ -318,14 +338,14 @@ public class ATM {
                     } catch (Exception e) {
                         scan.nextLine();
                         ConsoleUtility.clearScreen();
-                        System.out.println("Invalid Input!");
+                        System.out.println(ConsoleUtility.RED + "Invalid Input! (Must be #'s)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                         ConsoleUtility.clearScreen();
                     }
                 }
                 if (twentyDollarBills * 20 + fiveDollarBills * 5 != withdrawAMT) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("Invalid amount of $20 and $5 bills!");
+                    System.out.println(ConsoleUtility.RED + "Invalid amount of $20 and $5 bills!" + ConsoleUtility.RESET);
                     ConsoleUtility.pause(3000);
                     ConsoleUtility.clearScreen();
                 } else {
@@ -350,12 +370,13 @@ public class ATM {
         boolean done1 = false;
         while (!done1) {
             ConsoleUtility.clearScreen();
-            System.out.println("*---------------------------------------*");
+            System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
             System.out.println("*                                       *");
             System.out.println("*                   ATM                 *");
+            System.out.println("*                 Deposit               *");
             System.out.println("*                                       *");
-            System.out.println("*---------------------------------------*");
-            System.out.print("Enter amount to deposit: ");
+            System.out.println("*---------------------------------------*" + ConsoleUtility.RESET);
+            System.out.print("Enter amount to " + ConsoleUtility.CYAN + "deposit" + ConsoleUtility.RESET + ": ");
             try {
                 depositAMT = scan.nextDouble();
                 scan.nextLine();
@@ -363,7 +384,7 @@ public class ATM {
             } catch (Exception e) {
                 scan.nextLine();
                 ConsoleUtility.clearScreen();
-                System.out.println("Invalid Input!");
+                System.out.println(ConsoleUtility.RED + "Invalid Input! (Must be #'s)" + ConsoleUtility.RESET);
                 ConsoleUtility.pause();
                 ConsoleUtility.clearScreen();
             }
@@ -388,15 +409,16 @@ public class ATM {
             System.out.println("*---------------------------------------*");
             System.out.println("*                                       *");
             System.out.println("*                   ATM                 *");
+            System.out.println("*                 Transfer              *");
             System.out.println("*                                       *");
             System.out.println("*---------------------------------------*");
-            System.out.print("Enter the amount to transfer: ");
+            System.out.print("Enter the amount to " + ConsoleUtility.CYAN + "transfer" + ConsoleUtility.RESET + ": ");
             try {
                 transferAMT = scan.nextDouble();
                 scan.nextLine();
                 if (transferAMT > account.getBalance()) {
                     ConsoleUtility.clearScreen();
-                    System.out.println("Insufficient funds!");
+                    System.out.println(ConsoleUtility.RED + "Insufficient funds!" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();
                     ConsoleUtility.clearScreen();
                 } else {
@@ -405,7 +427,7 @@ public class ATM {
             } catch (Exception e) {
                 scan.nextLine();
                 ConsoleUtility.clearScreen();
-                System.out.println("Invalid Input!");
+                System.out.println(ConsoleUtility.RED + "Invalid Input! (Only #'s)" + ConsoleUtility.RESET);
                 ConsoleUtility.pause();
                 ConsoleUtility.clearScreen();
             }
