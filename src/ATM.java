@@ -37,8 +37,8 @@ public class ATM {
         int userInput = -1;
         boolean cont = false;
         int userPin = 0;
-        while (userInput != 7) {
-            while (!cont) {
+        while (userInput != 7) { // ends the loop if the user inputs 7
+            while (!cont) { // keeps asking for pin to access the atm
                 ConsoleUtility.clearScreen();
                 System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                 System.out.println("*                                       *");
@@ -71,7 +71,7 @@ public class ATM {
             }
             cont = false;
             Boolean cont1 = false;
-            while (!cont1) {
+            while (!cont1) { // loop for main menu begins
                 ConsoleUtility.clearScreen();
                 System.out.println(ConsoleUtility.BLUE + "*---------------------------------------*");
                 System.out.println("*                                       *");
@@ -132,7 +132,7 @@ public class ATM {
                         System.out.println(ConsoleUtility.RED + "Invalid Input! (checking or savings)" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
                     }
-                    if (account.equals("savings") && savings.getBalance() == 0) {
+                    if (account.equals("savings") && savings.getBalance() == 0) { // doesn't allow the code to continue if their accounts don't have money
                         ConsoleUtility.clearScreen();
                         System.out.println(ConsoleUtility.RED + "Insufficient Funds" + ConsoleUtility.RESET);
                         ConsoleUtility.pause();
@@ -207,7 +207,6 @@ public class ATM {
                 } else {
                     transfer(checking);
                 }
-
             } else if (userInput == 4) {
                 System.out.println(ConsoleUtility.PURPLE + "Savings Account: " + ConsoleUtility.RESET);
                 System.out.println(ConsoleUtility.GREEN + "$" + ConsoleUtility.RESET + savings.getBalance());
@@ -223,7 +222,6 @@ public class ATM {
                 customer.changePin();
                 transactionHistory.addHistory("pin");
             }
-
             String userInput1 = "";
             while (!userInput1.equals("y") && !userInput1.equals("n")) {
                 ConsoleUtility.clearScreen();
@@ -277,7 +275,7 @@ public class ATM {
                 try {
                     withdrawAMT = scan.nextDouble();
                     scan.nextLine();
-                    if (withdrawAMT <= account.getBalance() && withdrawAMT % 5 == 0 && withdrawAMT >= 5) {
+                    if (withdrawAMT <= account.getBalance() && withdrawAMT % 5 == 0 && withdrawAMT >= 5) { // makes sure the amount taken out is a multiple of 5
                         done1 = true;
                     } else {
                         ConsoleUtility.clearScreen();
@@ -298,7 +296,7 @@ public class ATM {
             int fiveDollarBills = 0;
             while (twentyDollarBills * 20 + fiveDollarBills * 5 != withdrawAMT) {
                 boolean done = false;
-                if (withdrawAMT >= 20) {
+                if (withdrawAMT >= 20) { // skips this question if the withdrawn amount is less than 20
                     while (!done) {
                         ConsoleUtility.clearScreen();
                         System.out.println(ConsoleUtility.BLUE +"*---------------------------------------*");
@@ -343,7 +341,7 @@ public class ATM {
                         ConsoleUtility.clearScreen();
                     }
                 }
-                if (twentyDollarBills * 20 + fiveDollarBills * 5 != withdrawAMT) {
+                if (twentyDollarBills * 20 + fiveDollarBills * 5 != withdrawAMT) { // checks if the amount of bills equals to the withdrawn amount
                     ConsoleUtility.clearScreen();
                     System.out.println(ConsoleUtility.RED + "Invalid amount of $20 and $5 bills!" + ConsoleUtility.RESET);
                     ConsoleUtility.pause(3000);
@@ -416,7 +414,7 @@ public class ATM {
             try {
                 transferAMT = scan.nextDouble();
                 scan.nextLine();
-                if (transferAMT > account.getBalance()) {
+                if (transferAMT > account.getBalance()) { // checks if the account has enough money to be transferred
                     ConsoleUtility.clearScreen();
                     System.out.println(ConsoleUtility.RED + "Insufficient funds!" + ConsoleUtility.RESET);
                     ConsoleUtility.pause();

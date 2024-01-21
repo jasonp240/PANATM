@@ -12,12 +12,12 @@ public class TransactionHistory {
     }
 
     public void addHistory(String action) {
-        sizeS++;
-        String[] temp = new String[sizeS];
+        sizeS++; // keeps track of the size of the list and also expands the list
+        String[] temp = new String[sizeS]; // makes new temporary list
         for (int i = 0; i < temp.length; i++) {
-            if (i < historyS.length) {
+            if (i < historyS.length) { // adds original things in the list to the temporary list
                 temp[i] = historyS[i];
-            } else {
+            } else { // else it puts the new information in the list
                 if (action.equals("pin")) {
                     temp[i] = "Pin changed";
                 }
@@ -32,7 +32,7 @@ public class TransactionHistory {
         historyS = temp;
     }
 
-    public void addHistory(double amount, String type) {
+    public void addHistory(double amount, String type) { // method is similar to addHistory
         sizeA++;
         String[] temp = new String[sizeA];
         for (int i = 0; i < temp.length; i++) {
@@ -76,7 +76,7 @@ public class TransactionHistory {
             System.out.println("*          Account Transactions         *");
             System.out.println("*                                       *");
             System.out.println("*---------------------------------------*");
-            for (int i = 0; i < historyA.length; i++) {
+            for (int i = 0; i < historyA.length; i++) { // basically makes sure the numbers are in the right form
                 if (i < 10) {
                     System.out.println("A000" + (i + 1) + " - " + historyA[i]);
                 } else if (i < 100) {
